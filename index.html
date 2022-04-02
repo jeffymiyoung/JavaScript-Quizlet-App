@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./assets/css/styles.css" />
+    <title>JS Quiz</title>
+</head>
+
+<body>
+    <!-- top header of page for timer and highscore link -->
+    <header>
+        <div>
+            
+            <a href="./highscores.html" class="highscores" target="b"> View High Scores </a>
+
+            <p class="timer">Time: <span id="time">120 seconds remaining</span></p>
+
+        </div>
+    </header>
+    
+    <div id="starter" class="starter">
+        <h1>
+            Welcome to the JavaScript Quiz
+        </h1>
+        <p>
+            Try to answer the following questions about JavaScript! Keep in mind this is a timed quiz. 
+            </br>
+            Correct answers will increase your score, Wrong answers will decrease the remaining time. Can you achieve the Highscore?
+        </p>
+        <input type="button" id="btn-starter" class="btn btn-starter" value="Start Quiz!">
+    </div>
+
+    <!-- master list of questions -->
+    <div id="questions" class="questions"></div>
+
+    <script src="./assets/js/script.js"></script>
+</body>
+
+</html>

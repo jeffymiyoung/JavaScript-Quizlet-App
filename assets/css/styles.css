@@ -1,0 +1,48 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
+
+header div {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding: 24px;
+}
+
+header div p {
+    text-align: right;
+}
+
+.starter {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.starter h1, .starter p {
+    padding: 16px;
+    margin: 16px;
+    flex: 1; 
+} 
+
+.btn-starter {
+    margin: 16px;
+    flex: 1;
+}
+
+.btn {
+    width: 100px;
+    height: 40px;
+    padding: 8px;
+    border-radius: 5px;
+    border-style: none;
+    background-color: #9C51B6
+}
+
+.btn:hover {
+    background-color: #FFBDF7
+}
