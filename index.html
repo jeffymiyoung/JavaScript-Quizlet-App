@@ -11,13 +11,13 @@
 <body>
     <!-- top header of page for timer and highscore link -->
     <header>
-        <div>
-            
-            <a href="./highscores.html" class="highscores" target="b"> View High Scores </a>
+            <nav class="nav">
+            <button id="btn-highscore" class="btn btn-highscore"> View High Scores </button>
+    
+            <button id="restart-btn" class="btn restart-btn">Restart</button>
+            </nav> 
 
             <p class="timer">Time: <span id="time">120 seconds remaining</span></p>
-
-        </div>
     </header>
     
     <div id="starter" class="starter">
@@ -29,7 +29,15 @@
             </br>
             Correct answers will increase your score, Wrong answers will decrease the remaining time. Can you achieve the Highscore?
         </p>
-        <input type="button" id="btn-starter" class="btn btn-starter" value="Start Quiz!">
+        <button id="btn-starter" class="btn btn-starter">Start Quiz!</button>
+    </div>
+
+    <div id="highscore" class="highscore hide">
+        <h1 class="title">Highscores List</h1>
+        <p>Did you make the cut?</p>
+            <ul class="highscore-list">
+
+            </ul>
     </div>
 
     <!-- master list of questions -->
@@ -42,10 +50,6 @@
                 <button name="choices" class="btn">Answer 3</button>
                 <button name="choices" class="btn">Answer 4</button>
             </div>
-        </div>
-
-        <div class="controls">
-            <button id="restart-btn" class="restart-btn btn">Restart</button>
         </div>
     </div>
 

@@ -7,7 +7,7 @@ var _interval;
 var elements = {
     timer: document.getElementById('time'),
     intro:  document.getElementById('starter'),
-
+    highscore: document.getElementById('highscore'),
     container: document.getElementById('container'),
     question: document.getElementById('question'),
     questionContainer: document.getElementById('question-container'),
@@ -16,6 +16,7 @@ var elements = {
         choices: document.getElementsByName('choices'),
         start: document.getElementById('btn-starter'),
         restart: document.getElementById('restart-btn'),
+        highscore: document.getElementById('btn-highscore'),
     },
 };
 
@@ -45,68 +46,70 @@ var data = [
         answer: '//',
         choices: ['#', '/', '$', '//'],
     },
+    {
+        question: "Which JavaScript keyword is used to declare a variable?",
+        answer: 'var',
+        choices: ['var', 'Var', 'Let', 'All of the Above',],
+    },
+
+    {
+        question: "Which is the correct syntax to declare a constant in JavaScript?",
+        answer: 'const constant_name = value;',
+        choices: ['const constant_name;', 'constant_name const;', 'constant_name const = value;', 'const constant_name = value;'],
+    },
+    {
+        question: "How do you create a function in JavaScript?",
+        answer: 'function myFunction()',
+        choices: ['function = myFunction()', 'function myFunction()', 'function:myFunction()', 'function::myFunction()'],
+    },
+    {
+        question: "How do you find the minimum of x and y using JavaScript?",
+        answer: 'Math.min(x,y);',
+        choices: ['Math.min(xy);', 'min(x,y);', 'Math.min(x,y);', 'min(xy);'],
+    },
+    {
+        question: "Which JavaScript label catches all the values, except for the ones specified?",
+        answer: 'default',
+        choices: ['default', 'catch', 'try', 'label'],
+    },
+
+    {
+        question: "Which are the correct “if” statements to execute certain code if “x” is equal to 2?",
+        answer: 'if(x == 2)',
+        choices: ['if(x 2)', 'if(x != 2 )', 'if(x = 2)', 'if(x == 2)'],
+    },
 ];
-//     {
-//         question: "Which JavaScript keyword is used to declare a variable?",
-//         answers: [
-//             { text: 'var', correct: true },
-//             { text: 'Var', correct: false },
-//             { text: 'Let', correct: false },
-//             { text: 'All of the Above', correct: false },
-//         ],
-//     },
 
-//     {
-//         question: "Which is the correct syntax to declare a constant in JavaScript?",
-//         answers: [
-//             { text: 'const constant_name;', correct: false },
-//             { text: 'constant_name const;', correct: false },
-//             { text: 'constant_name const = value;', correct: false },
-//             { text: 'const constant_name = value;', correct: true },
-//         ],
-//     },
-
-//     {
-//         question: "How do you create a function in JavaScript?",
-//         answers: [
-//             { text: 'function = myFunction()', correct: false },
-//             { text: 'function myFunction()', correct: true },
-//             { text: 'function:myFunction()', correct: false },
-//             { text: 'function::myFunction()', correct: false },
-//         ],
-//     },
-
-//     {
-//         question: "How do you find the minimum of x and y using JavaScript?",
-//         answers: [
-//             { text: 'Math.min(xy);', correct: false },
-//             { text: 'min(x,y);', correct: false },
-//             { text: 'Math.min(x,y);', correct: true },
-//             { text: 'min(xy);', correct: false },
-//         ],
-//     },
-
-//     {
-//         question: "Which JavaScript label catches all the values, except for the ones specified?",
-//         answers: [
-//             { text: 'default', correct: true },
-//             { text: 'catch', correct: false },
-//             { text: 'try', correct: false },
-//             { text: 'label', correct: false },
-//         ],
-//     },
-
-//     {
-//         question: "Which are the correct “if” statements to execute certain code if “x” is equal to 2?",
-//         answers: [
-//             { text: 'if(x 2)', correct: false },
-//             { text: 'if(x != 2 )', correct: false },
-//             { text: 'if(x = 2)', correct: false },
-//             { text: 'if(x == 2)', correct: true },
-//         ],
-//     },
-// ];
-
+var highScore = [
+    {
+        name: "Max Score",
+        score: "220",
+    },
+    {
+        name: "ZTG",
+        score: "200",
+    },
+    {
+        name: "AGJ",
+        score: "182",
+    },
+    {
+        name: "ACQ",
+        score: "163",
+    },
+    {
+        name: "TQS",
+        score: "150",
+    },
+    {
+        name: "DTR",
+        score: "117",
+    },
+    {
+        name: "GGG",
+        score: "108",
+    },
+];
 
 // highscores section
 // if it's a correct answer increament score by 10 or decrement seconds by 5
@@ -133,7 +136,7 @@ function startTimer() {
             elements.timer.textContent = _time + ' seconds remaining';
         }
         else if (_time == 1) {
-            elements.timer.textContent = _time + 'second remaining';
+            elements.timer.textContent = _time + ' second remaining';
         }
         else {
             elements.timer.textContent = 'Time is up!';
@@ -175,15 +178,21 @@ function checkAnswer(i) {
 // timer = 0 game over | initials + score = highscore
 function showScore() {
     clearInterval(_interval);
-    elements.questionContainer.classList.add('hide');
-    elements.timer.textContent = "Complete!";
+    elements.container.classList.add('hide');
+    elements.timer.textContent = _time + " seconds left";
     _score += _time;
     
     console.log(_score);
-
-    
-
+    // get player name and push to highscore array
+    let person = prompt("Congratulations, please enter your Initials!");
+    if (person != null) {
+        highScore.push({
+            name: person,
+            score: _score,
+        });
+    };
 };
+    
 
 // Restart Button - reloads the page to reset all data
 function restartGame() {
@@ -191,6 +200,12 @@ function restartGame() {
     if (confirmRestart) {
         document.location.reload(true);
     };
+};
+
+function viewScores() {
+    elements.highscore.classList.remove('hide');
+    elements.container.classList.add('hide');
+    elements.intro.classList.add('hide');
 };
 
 
@@ -218,4 +233,9 @@ elements.button.choices[2].addEventListener('click', function(e) {
 });
 elements.button.choices[3].addEventListener('click', function(e) {
     checkAnswer(3);
+});
+
+// event listener for highscore button
+elements.button.highscore.addEventListener('click', function() {
+    viewScores();
 });
