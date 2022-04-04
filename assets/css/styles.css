@@ -1,7 +1,13 @@
-* {
+*, *::before, *::after {
     margin: 0px;
     padding: 0px;
+    box-sizing: border-box;
     font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
 }
 
 header div {
@@ -29,20 +35,74 @@ header div p {
     flex: 1; 
 } 
 
-.btn-starter {
-    margin: 16px;
-    flex: 1;
-}
-
 .btn {
     width: 100px;
     height: 40px;
     padding: 8px;
     border-radius: 5px;
     border-style: none;
-    background-color: #9C51B6
+    background-color: #9C51B6;
+    border: 1px solid #3a1c44;
+    color: white;
 }
 
 .btn:hover {
     background-color: #FFBDF7
+}
+
+.btn-starter {
+    margin: 16px;
+    flex: 1;
+    font-weight: bold;
+    background-color: #FF9171;
+    color: black;
+}
+
+.btn-starter:hover {
+    background-color: #F8D6B8;
+}
+
+.btn-grid {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.btn.correct {
+    color: black;
+    background-color: green;
+}
+
+.btn.wrong {
+    color: black;
+    background-color: red;
+}
+
+.restart-btn {
+    font-weight: bold;
+    color: black;
+    background-color: #03A9F4;
+}
+
+.restart-btn:hover {
+    background-color: #b3e5fc;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    align-items: center;
+    align-content: center;
+    flex-direction: column;
+    flex: 1;
+    width: 800px;
+    max-width: 80%;
+    margin: auto;
+    padding: 24px;
+}
+
+.hide {
+    display: none;
 }
