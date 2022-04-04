@@ -126,7 +126,7 @@ function startGame() {
 
 // Timer functions
 function startTimer() {
-    _interval - setInterval(() => {
+    _interval = setInterval(() => {
     _time--;
 
         if (_time > 1) {
@@ -177,8 +177,12 @@ function showScore() {
     clearInterval(_interval);
     elements.questionContainer.classList.add('hide');
     elements.timer.textContent = "Complete!";
+    _score += _time;
     
+    console.log(_score);
+
     
+
 };
 
 // Restart Button - reloads the page to reset all data
