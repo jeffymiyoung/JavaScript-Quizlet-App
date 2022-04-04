@@ -36,6 +36,8 @@ header div p {
 } 
 
 .btn {
+    display: inline-block;
+    text-align: center;
     width: 100px;
     height: 40px;
     padding: 8px;
@@ -62,13 +64,6 @@ header div p {
     background-color: #F8D6B8;
 }
 
-.btn-grid {
-    display: grid;
-    grid-template-columns: repeat(2, auto);
-    gap: 10px;
-    margin: 20px 0;
-}
-
 .btn.correct {
     color: black;
     background-color: green;
@@ -89,6 +84,14 @@ header div p {
     background-color: #b3e5fc;
 }
 
+.btn-grid {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    align-content: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
 .container {
     display: flex;
     justify-content: space-between;
@@ -100,8 +103,8 @@ header div p {
     width: 800px;
     max-width: 80%;
     margin: auto;
-    padding: 24px;
 }
+
 
 .hide {
     display: none;
