@@ -1,7 +1,8 @@
 // variables / declarations
-var _timer = 120;
+var _time = 120;
 var _index = 0;
 var _score = 0;
+var _interval;
 
 var elements = {
     timer: document.getElementById('time'),
@@ -9,6 +10,7 @@ var elements = {
 
     container: document.getElementById('container'),
     question: document.getElementById('question'),
+    questionContainer: document.getElementById('question-container'),
     
     button: {
         choices: document.getElementsByName('choices'),
@@ -43,67 +45,67 @@ var data = [
         answer: '//',
         choices: ['#', '/', '$', '//'],
     },
-
-    {
-        question: "Which JavaScript keyword is used to declare a variable?",
-        answers: [
-            { text: 'var', correct: true },
-            { text: 'Var', correct: false },
-            { text: 'Let', correct: false },
-            { text: 'All of the Above', correct: false },
-        ],
-    },
-
-    {
-        question: "Which is the correct syntax to declare a constant in JavaScript?",
-        answers: [
-            { text: 'const constant_name;', correct: false },
-            { text: 'constant_name const;', correct: false },
-            { text: 'constant_name const = value;', correct: false },
-            { text: 'const constant_name = value;', correct: true },
-        ],
-    },
-
-    {
-        question: "How do you create a function in JavaScript?",
-        answers: [
-            { text: 'function = myFunction()', correct: false },
-            { text: 'function myFunction()', correct: true },
-            { text: 'function:myFunction()', correct: false },
-            { text: 'function::myFunction()', correct: false },
-        ],
-    },
-
-    {
-        question: "How do you find the minimum of x and y using JavaScript?",
-        answers: [
-            { text: 'Math.min(xy);', correct: false },
-            { text: 'min(x,y);', correct: false },
-            { text: 'Math.min(x,y);', correct: true },
-            { text: 'min(xy);', correct: false },
-        ],
-    },
-
-    {
-        question: "Which JavaScript label catches all the values, except for the ones specified?",
-        answers: [
-            { text: 'default', correct: true },
-            { text: 'catch', correct: false },
-            { text: 'try', correct: false },
-            { text: 'label', correct: false },
-        ],
-    },
-
-    {
-        question: "Which are the correct “if” statements to execute certain code if “x” is equal to 2?",
-        answers: [
-            { text: 'if(x 2)', correct: false },
-            { text: 'if(x != 2 )', correct: false },
-            { text: 'if(x = 2)', correct: false },
-            { text: 'if(x == 2)', correct: true },
-        ],
-    },
 ];
+//     {
+//         question: "Which JavaScript keyword is used to declare a variable?",
+//         answers: [
+//             { text: 'var', correct: true },
+//             { text: 'Var', correct: false },
+//             { text: 'Let', correct: false },
+//             { text: 'All of the Above', correct: false },
+//         ],
+//     },
+
+//     {
+//         question: "Which is the correct syntax to declare a constant in JavaScript?",
+//         answers: [
+//             { text: 'const constant_name;', correct: false },
+//             { text: 'constant_name const;', correct: false },
+//             { text: 'constant_name const = value;', correct: false },
+//             { text: 'const constant_name = value;', correct: true },
+//         ],
+//     },
+
+//     {
+//         question: "How do you create a function in JavaScript?",
+//         answers: [
+//             { text: 'function = myFunction()', correct: false },
+//             { text: 'function myFunction()', correct: true },
+//             { text: 'function:myFunction()', correct: false },
+//             { text: 'function::myFunction()', correct: false },
+//         ],
+//     },
+
+//     {
+//         question: "How do you find the minimum of x and y using JavaScript?",
+//         answers: [
+//             { text: 'Math.min(xy);', correct: false },
+//             { text: 'min(x,y);', correct: false },
+//             { text: 'Math.min(x,y);', correct: true },
+//             { text: 'min(xy);', correct: false },
+//         ],
+//     },
+
+//     {
+//         question: "Which JavaScript label catches all the values, except for the ones specified?",
+//         answers: [
+//             { text: 'default', correct: true },
+//             { text: 'catch', correct: false },
+//             { text: 'try', correct: false },
+//             { text: 'label', correct: false },
+//         ],
+//     },
+
+//     {
+//         question: "Which are the correct “if” statements to execute certain code if “x” is equal to 2?",
+//         answers: [
+//             { text: 'if(x 2)', correct: false },
+//             { text: 'if(x != 2 )', correct: false },
+//             { text: 'if(x = 2)', correct: false },
+//             { text: 'if(x == 2)', correct: true },
+//         ],
+//     },
+// ];
 
 
 // highscores section
@@ -115,9 +117,6 @@ var data = [
 // Start Game coding (after button click event)
 function startGame() {
 
-    _index = 0;
-    _timer = 120;
-
     elements.intro.classList.add('hide');
     elements.container.classList.remove('hide');
 
@@ -127,20 +126,18 @@ function startGame() {
 
 // Timer functions
 function startTimer() {
-    _timer = 120;
+    _interval - setInterval(() => {
+    _time--;
 
-    var timeInterval = setInterval(function () {
-        if (_timer > 1) {
-            elements.timer.textContent = _timer + ' seconds remaining';
-            _timer--;
+        if (_time > 1) {
+            elements.timer.textContent = _time + ' seconds remaining';
         }
-        else if (_timer === 1) {
-            elements.timer.textContent = _timer + 'second remaining';
-            _timer--;
+        else if (_time == 1) {
+            elements.timer.textContent = _time + 'second remaining';
         }
         else {
             elements.timer.textContent = 'Time is up!';
-            clearInterval(timeInterval);
+            showScore();
         }
     }, 1000);
 };
@@ -154,6 +151,7 @@ function newQuestion(i) {
     elements.button.choices[3].innerText = data[i].choices[3];
 };
 
+// User answers question | increase score/decrease time / show next question
 function checkAnswer(i) {
     answer = data[_index].answer;
     choice = data[_index].choices[i];
@@ -162,10 +160,10 @@ function checkAnswer(i) {
         _score+= 10;
     }
     else {
-        _timer-= 10;
+        _time-= 10;
     };
-    _index++;
 
+    _index++;
     if (_index < data.length) {
         newQuestion(_index);
     }
@@ -174,13 +172,14 @@ function checkAnswer(i) {
     };
 };
 
+// timer = 0 game over | initials + score = highscore
 function showScore() {
+    clearInterval(_interval);
+    elements.questionContainer.classList.add('hide');
+    elements.timer.textContent = "Complete!";
+    
     
 };
-
-// User answers question | increase score/decrease time / show next question
-
-// timer = 0 game over | initials + score = highscore
 
 // Restart Button - reloads the page to reset all data
 function restartGame() {
