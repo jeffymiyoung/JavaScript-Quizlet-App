@@ -1,58 +1,47 @@
-var seconds = 120;
-var index = 0;
-var score = 0;
+// variables / declarations
+var _timer = 120;
+var _index = 0;
+var _score = 0;
 
-var timerEl = document.getElementById('time');
+var elements = {
+    timer: document.getElementById('time'),
+    intro:  document.getElementById('starter'),
 
-const openText = document.getElementById('starter');
-const startButton = document.getElementById('btn-starter');
-const questionContainerElement = document.getElementById('container');
-const questionElement = document.getElementById('question')
-const answerButtonsElement = document.getElementById('answer-buttons')
-const restartButton = document.getElementById('restart-btn')
+    container: document.getElementById('container'),
+    question: document.getElementById('question'),
+    
+    button: {
+        choices: document.getElementsByName('choices'),
+        start: document.getElementById('btn-starter'),
+        restart: document.getElementById('restart-btn'),
+    },
+};
+
 
 var shuffledQuestions 
 var currentQuestionIndex
 
-const questions = [
+var data = [
     {
         question: "Inside which HTML element do we put the JavaScript?",
-        answers: [
-            { text: '<scripting>', correct: false },
-            { text: '<script>', correct: true },
-            { text: '<javascript>', correct: false },
-            { text: '<js>', correct: false },
-        ],
+        answer: '<script>',
+        choices: ['<scripting>', '<script>', '<javascript>', '<js>'],
     },
-
     {
         question: "Where is the correct place to insert a JavaScript?",
-        answers: [
-            { text: 'Both the <head> and <body> section', correct: false },
-            { text: 'The <head> section', correct: false },
-            { text: 'The <body> section', correct: true },
-            { text: 'At the Top of the HTML File', correct: false },
-        ],
+        answer: 'The <body> section',
+        choices: ['Both the <head> and <body> section', 'The <head> section', 'The <body> section', 'At the Top of the HTML File'],
     },
-
     {
         question: "Which symbol is used separate JavaScript statements?",
-        answers: [
-            { text: 'Comma (,)', correct: false },
-            { text: 'Colon (:)', correct: false },
-            { text: 'Hyphen (_)', correct: false },
-            { text: 'Semicolon (;)', correct: true },
-        ],
+        answer: 'Semicolon (;)', 
+        choices: ['Comma (,)', 'Colon (:)', 'Hyphen (_)', 'Semicolon (;)'],
     },
 
     {
         question: "In JavaScript, single line comment begins with ___.",
-        answers: [
-            { text: '#', correct: false },
-            { text: '/', correct: false },
-            { text: '$', correct: false },
-            { text: '//', correct: true },
-        ],
+        answer: '//',
+        choices: ['#', '/', '$', '//'],
     },
 
     {
@@ -116,111 +105,114 @@ const questions = [
     },
 ];
 
-// Start a timer
-function timer() {
-    var seconds = 120;
+
+// highscores section
+// if it's a correct answer increament score by 10 or decrement seconds by 5
+// Then increment index by 1. When you increment check if index === questions.length and if it is return and display textbox to enter initials
+// Once user enters the initials store initials and score into local storage 
+
+// JS Game and Application Code
+// Start Game coding (after button click event)
+function startGame() {
+
+    _index = 0;
+    _timer = 120;
+
+    elements.intro.classList.add('hide');
+    elements.container.classList.remove('hide');
+
+    newQuestion(_index);
+    startTimer();
+};
+
+// Timer functions
+function startTimer() {
+    _timer = 120;
 
     var timeInterval = setInterval(function () {
-        if (seconds > 1) {
-            timerEl.textContent = seconds + ' seconds remaining';
-            seconds--;
+        if (_timer > 1) {
+            elements.timer.textContent = _timer + ' seconds remaining';
+            _timer--;
         }
-        else if (seconds === 1) {
-            timerEl.textContent = seconds + 'second remaining';
-            seconds--;
+        else if (_timer === 1) {
+            elements.timer.textContent = _timer + 'second remaining';
+            _timer--;
         }
         else {
-            timerEl.textContent = 'Time is up!';
+            elements.timer.textContent = 'Time is up!';
             clearInterval(timeInterval);
         }
     }, 1000);
 };
 
-function startGame() {
-    openText.classList.add('hide');
-    shuffledQuestions = questions.sort(() => Math.random() - .5);
-    currentQuestionIndex = 0;
-    questionContainerElement.classList.remove('hide');
-    setNextQuestion();
-    timer();
-};
-
-function setNextQuestion() {
-    resetState();
-    showQuestion(shuffledQuestions[currentQuestionIndex]);
-};
-
 // display a question and options
-function showQuestion(question) {
-    questionElement.innerText = question.question;
-    question.answers.forEach(answer => {
-        const button = document.createElement('button')
-        button.innerText = answer.text
-        button.classList.add('btn')
-        if (answer.correct) {
-            button.dataset.correct = answer.correct
-        }
-        button.addEventListener('click', selectAnswer);
-        answerButtonsElement.appendChild(button);
-    });
+function newQuestion(i) {
+    elements.question.innerText = data[i].question;
+    elements.button.choices[0].innerText = data[i].choices[0];
+    elements.button.choices[1].innerText = data[i].choices[1];
+    elements.button.choices[2].innerText = data[i].choices[2];
+    elements.button.choices[3].innerText = data[i].choices[3];
 };
 
-function resetState() {
-    while (answerButtonsElement.firstChild) {
-        answerButtonsElement.removeChild(answerButtonsElement.firstChild);
+function checkAnswer(i) {
+    answer = data[_index].answer;
+    choice = data[_index].choices[i];
+
+    if (choice == answer) {
+        _score+= 10;
+    }
+    else {
+        _timer-= 10;
+    };
+    _index++;
+
+    if (_index < data.length) {
+        newQuestion(_index);
+    }
+    else  {
+        showScore();
     };
 };
 
-function selectAnswer(e) {
-    var selectedButton = e.target
-    var correct = selectedButton.dataset.correct
-    setStatusClass(document.body, correct)
-    Array.from(answerButtonsElement.children).forEach(button => {
-        setStatusClass(button, button.datatset.correct)
-    })
+function showScore() {
+    
 };
-
-function setStatusClass(element, correct) {
-    clearStatusClass(element)
-    if (correct) {
-        element.classList.add('correct')
-    } else {
-        element.classList.add('wrong')
-    };
-};
-
-function clearStatusClass(element) {
-    element.classList.remove('correct');
-    element.classList.remove('wrong');
-};
-
-startButton.addEventListener("click", function () {
-    startGame();
-});
-
-// Restart Button - reloads the page to reset all data
-restartButton.addEventListener('click', function() {
-    confirmRestart = confirm('Would you like to restart all progress?')
-    if (confirmRestart) {
-        document.location.reload(true);
-    };
-});
-
-// highscores section
-// once user click on an option check user's reapnse with correct answer from questions array
-// if it's a correct answer increament score by 10 or decrement seconds by 5
-// Then increment index by 1. When you increment check if index === questions.length and if it is return and display textbox to enter initials
-// Once user enters the initials store initials and score into local storage 
-
-
-// App Flow
-
-// Click 'Start'
-
-// Timer Starts
-
-// Shows Questions / Answers
 
 // User answers question | increase score/decrease time / show next question
 
 // timer = 0 game over | initials + score = highscore
+
+// Restart Button - reloads the page to reset all data
+function restartGame() {
+    confirmRestart = confirm('Would you like to restart all progress?')
+    if (confirmRestart) {
+        document.location.reload(true);
+    };
+};
+
+
+// UX modifications and enhancements
+// event listener for start button
+elements.button.start.addEventListener('click', function() {
+    startGame();
+});
+
+// event listener for restart button
+elements.button.restart.addEventListener('click', function() {
+    restartGame();
+});
+
+
+// event listener for choices buttons
+elements.button.choices[0].addEventListener('click', function(e) {
+    checkAnswer(0);
+});
+elements.button.choices[1].addEventListener('click', function(e) {
+    checkAnswer(1);
+});
+elements.button.choices[2].addEventListener('click', function(e) {
+    checkAnswer(2);
+});
+elements.button.choices[3].addEventListener('click', function(e) {
+    checkAnswer(3);
+});
