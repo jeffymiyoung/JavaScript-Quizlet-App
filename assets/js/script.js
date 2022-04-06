@@ -7,22 +7,21 @@ var _interval;
 var elements = {
     timer: document.getElementById('time'),
     intro:  document.getElementById('starter'),
-    highscore: document.getElementById('highscore'),
+    
     container: document.getElementById('container'),
     question: document.getElementById('question'),
     questionContainer: document.getElementById('question-container'),
     
+    highScores: document.getElementById('highscore'), // id variable
+
+
     button: {
         choices: document.getElementsByName('choices'),
         start: document.getElementById('btn-starter'),
-        restart: document.getElementById('restart-btn'),
-        highscore: document.getElementById('btn-highscore'),
+        restart: document.getElementById('btn-restart'),
+        highscore: document.getElementById('btn-highscore'), // button variable
     },
 };
-
-
-var shuffledQuestions 
-var currentQuestionIndex
 
 var data = [
     {
@@ -80,7 +79,8 @@ var data = [
     },
 ];
 
-var highScore = [
+// array variable
+var highScoreArr = [
     {
         name: "Max Score",
         score: "220",
@@ -130,23 +130,27 @@ function startGame() {
 // Timer functions
 function startTimer() {
     _interval = setInterval(() => {
-    _time--;
+    _time = _time - 0.0333333333333;
 
         if (_time > 1) {
-            elements.timer.textContent = _time + ' seconds remaining';
+            elements.timer.textContent = _time.toFixed(1) + ' seconds';
         }
         else if (_time == 1) {
-            elements.timer.textContent = _time + ' second remaining';
+            elements.timer.textContent = _time + ' second';
         }
         else {
             elements.timer.textContent = 'Time is up!';
             showScore();
         }
-    }, 1000);
+    }, 33.3333333333);
 };
 
 // display a question and options
 function newQuestion(i) {
+
+    // randomizer
+    // var choices = _data[i].
+
     elements.question.innerText = data[i].question;
     elements.button.choices[0].innerText = data[i].choices[0];
     elements.button.choices[1].innerText = data[i].choices[1];
@@ -179,17 +183,19 @@ function checkAnswer(i) {
 function showScore() {
     clearInterval(_interval);
     elements.container.classList.add('hide');
-    elements.timer.textContent = _time + " seconds left";
-    _score += _time;
+    elements.timer.textContent = _time.toFixed(1) + " seconds left";
+    var finalScore = Math.round(_score += _time);
     
-    console.log(_score);
-    // get player name and push to highscore array
-    let person = prompt("Congratulations, please enter your Initials!");
+    console.log(finalScore);
+
+    // get player name and push to highscore array and save to localStorage
+    let person = prompt("Score: " + finalScore + "! Congratulations, please enter your Initials!");
     if (person != null) {
-        highScore.push({
+        highScoreArr.push({
             name: person,
-            score: _score,
+            score: finalScore,
         });
+        localStorage.setItem("highScoreArr", JSON.stringify(highScoreArr));
     };
 };
     
@@ -202,8 +208,9 @@ function restartGame() {
     };
 };
 
+// highscores button function
 function viewScores() {
-    elements.highscore.classList.remove('hide');
+    elements.highScores.classList.remove('hide');
     elements.container.classList.add('hide');
     elements.intro.classList.add('hide');
 };
