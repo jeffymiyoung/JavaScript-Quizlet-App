@@ -4,6 +4,8 @@ var _index = 0;
 var _score = 0;
 var _interval;
 
+var shuffledQuestions;
+
 var elements = {
     timer: document.getElementById('time'),
     intro:  document.getElementById('starter'),
@@ -13,6 +15,7 @@ var elements = {
     questionContainer: document.getElementById('question-container'),
     
     highScores: document.getElementById('highscore'), // id variable
+    highscoreUl: document.getElementById('highscore-list'), // ul variable
 
 
     button: {
@@ -83,38 +86,33 @@ var data = [
 var highScoreArr = [
     {
         name: "Max Score",
-        score: "220",
+        score: 220,
     },
     {
         name: "ZTG",
-        score: "200",
+        score: 200,
     },
     {
         name: "AGJ",
-        score: "182",
+        score: 182,
     },
     {
         name: "ACQ",
-        score: "163",
+        score: 163,
     },
     {
         name: "TQS",
-        score: "150",
+        score: 150,
     },
     {
         name: "DTR",
-        score: "117",
+        score: 117,
     },
     {
         name: "GGG",
-        score: "108",
+        score: 108,
     },
 ];
-
-// highscores section
-// if it's a correct answer increament score by 10 or decrement seconds by 5
-// Then increment index by 1. When you increment check if index === questions.length and if it is return and display textbox to enter initials
-// Once user enters the initials store initials and score into local storage 
 
 // JS Game and Application Code
 // Start Game coding (after button click event)
@@ -140,17 +138,14 @@ function startTimer() {
         }
         else {
             elements.timer.textContent = 'Time is up!';
-            showScore();
+            getScore();
         }
     }, 33.3333333333);
 };
 
 // display a question and options
 function newQuestion(i) {
-
-    // randomizer
-    // var choices = _data[i].
-
+    
     elements.question.innerText = data[i].question;
     elements.button.choices[0].innerText = data[i].choices[0];
     elements.button.choices[1].innerText = data[i].choices[1];
@@ -175,46 +170,99 @@ function checkAnswer(i) {
         newQuestion(_index);
     }
     else  {
-        showScore();
+        getScore();
     };
 };
 
 // timer = 0 game over | initials + score = highscore
-function showScore() {
+function getScore() {
     clearInterval(_interval);
     elements.container.classList.add('hide');
-    elements.timer.textContent = _time.toFixed(1) + " seconds left";
-    var finalScore = Math.round(_score += _time);
+    
+    var finalScore = parseInt(Math.round(_score += _time));
+
+    elements.timer.textContent = _time.toFixed(1) + " seconds left | Score: " + finalScore;
     
     console.log(finalScore);
 
-    // get player name and push to highscore array and save to localStorage
-    let person = prompt("Score: " + finalScore + "! Congratulations, please enter your Initials!");
-    if (person != null) {
-        highScoreArr.push({
-            name: person,
-            score: finalScore,
-        });
-        localStorage.setItem("highScoreArr", JSON.stringify(highScoreArr));
-    };
+    setTimeout(function () {
+        // get player name and push to highscore array and save to localStorage
+        let person = prompt("Score: " + finalScore + "! Congratulations, please enter your Initials!");
+
+        var newAddition = { name: person, 
+                            score: finalScore};
+
+        if (person == 0) {
+            alert("Please enter your Initials");
+        }
+        else if (person > 5) {
+            alert("Initials cannot be more than 5 character!");
+        } 
+        else {
+            highScoreArr.push(newAddition);
+            highScoreArr.sort((a, b) => (a.score < b.score));
+            localStorage.setItem("highScoreArr", JSON.stringify(highScoreArr));
+        };
+    }, 500);
+
+    
 };
+
+
+
+// get LocalStorage information - parse and sort highscore by score# and appendChild into ul and onto html (highscore section)
+function showScore() {
+
+    // get localStorage data and parse into obj for new highScoreArr
+    var newHighscore = JSON.parse(localStorage.getItem("highScoreArr"));
+    
+    // sorting newHighscore
+    // newHighscore.sort(function(a, b) {
+    //     return a - b;
+    // });
+
+    console.log(newHighscore);
+
+    // creates li and p and textContent for p tags (need to put inside for look for all highscores in array)
+    var highscoreEl = document.createElement("li");
+    var highscoreP = document.createElement("p");
+
+    highscoreP.textContent = ("Name:  | Score: " );
+
+    // appendChild p > li > ul
+    highscoreEl.appendChild(highscoreP);
+    elements.highscoreUl.appendChild(highscoreEl);
+}
     
 
-// Restart Button - reloads the page to reset all data
+// Restart Button - reset all data
 function restartGame() {
-    confirmRestart = confirm('Would you like to restart all progress?')
-    if (confirmRestart) {
-        document.location.reload(true);
-    };
+    // var re-declaration
+    _time = 120;
+    _index = 0;
+    _score = 0;
+    
+    clearInterval(_interval);
+
+    elements.intro.classList.remove('hide');
+    elements.highScores.classList.add('hide');
+    elements.container.classList.add('hide');
+
+    elements.timer.textContent = "120 seconds";
 };
 
 // highscores button function
 function viewScores() {
+
+    clearInterval(_interval);
+    elements.timer.textContent = "120 seconds";
+
     elements.highScores.classList.remove('hide');
     elements.container.classList.add('hide');
     elements.intro.classList.add('hide');
-};
 
+    showScore();
+};
 
 // UX modifications and enhancements
 // event listener for start button
@@ -244,5 +292,6 @@ elements.button.choices[3].addEventListener('click', function(e) {
 
 // event listener for highscore button
 elements.button.highscore.addEventListener('click', function() {
+    elements.highscoreUl.textContent = "";
     viewScores();
 });
