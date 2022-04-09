@@ -4,8 +4,7 @@ var _index = 0;
 var _score = 0;
 var _interval;
 
-var shuffledQuestions;
-
+// variable page elements declarations
 var elements = {
     timer: document.getElementById('time'),
     intro:  document.getElementById('starter'),
@@ -26,6 +25,7 @@ var elements = {
     },
 };
 
+// var question array declarations
 var data = [
     {
         question: "Inside which HTML element do we put the JavaScript?",
@@ -82,7 +82,7 @@ var data = [
     },
 ];
 
-// array variable
+// Highscore Array - array variable
 var highScoreArr = [
     {
         name: "Max Score",
@@ -178,6 +178,7 @@ function checkAnswer(i) {
 
 // timer = 0 game over | initials + score = highscore
 function getScore() {
+    // stop timer - rounds (player score + time remaining) = finalscore - shows finalScore where timer is located
     clearInterval(_interval);
     elements.container.classList.add('hide');
     
@@ -186,7 +187,7 @@ function getScore() {
     elements.timer.textContent = _time.toFixed(1) + " seconds left | Score: " + finalScore;
 
     setTimeout(function () {
-        // get player name and push to highscore array and save to localStorage
+        // get player name and push to highscore array and save to localStorage - then view the Roster
         let person = prompt("Score: " + finalScore + "! Congratulations, please enter your Initials!");
 
         var newAddition = { name: person, 
@@ -203,10 +204,9 @@ function getScore() {
             highScoreArr.sort((a, b) => (a.score < b.score) ? 1 : -1);
             localStorage.setItem("highScoreArr", JSON.stringify(highScoreArr));
         };
-    }, 500);
-    
 
-    
+        viewScores();
+    }, 500);
 };
 
 
