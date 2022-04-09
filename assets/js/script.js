@@ -160,9 +160,11 @@ function checkAnswer(i) {
 
     if (choice == answer) {
         _score+= 10;
+        console.log("correct");
     }
     else {
         _time-= 10;
+        console.log("wrong");
     };
 
     _index++;
@@ -182,8 +184,6 @@ function getScore() {
     var finalScore = parseInt(Math.round(_score += _time));
 
     elements.timer.textContent = _time.toFixed(1) + " seconds left | Score: " + finalScore;
-    
-    console.log(finalScore);
 
     setTimeout(function () {
         // get player name and push to highscore array and save to localStorage
@@ -200,10 +200,11 @@ function getScore() {
         } 
         else {
             highScoreArr.push(newAddition);
-            highScoreArr.sort((a, b) => (a.score < b.score));
+            highScoreArr.sort((a, b) => (a.score < b.score) ? 1 : -1);
             localStorage.setItem("highScoreArr", JSON.stringify(highScoreArr));
         };
     }, 500);
+    
 
     
 };
@@ -215,11 +216,6 @@ function showScore() {
 
     // get localStorage data and parse into obj for new highScoreArr
     var newHighscore = JSON.parse(localStorage.getItem("highScoreArr"));
-    
-    // sorting newHighscore
-    // newHighscore.sort(function(a, b) {
-    //     return a - b;
-    // });
 
     console.log(newHighscore);
 
@@ -227,11 +223,20 @@ function showScore() {
     var highscoreEl = document.createElement("li");
     var highscoreP = document.createElement("p");
 
-    highscoreP.textContent = ("Name:  | Score: " );
+    // highscoreP.textContent = "Name: " + newHighscore[i].name + " | Score: " + newHighscore[i].score;
+    for (var i = 0; i < newHighscore.length; i++) {
+        var highscoreEl = document.createElement("li");
+        var highscoreP = document.createElement("p");
+
+        highscoreP.textContent = "Name: " + newHighscore[i].name + " | Score: " + newHighscore[i].score;
+        
+        highscoreEl.appendChild(highscoreP);
+        elements.highscoreUl.appendChild(highscoreEl);
+    };
 
     // appendChild p > li > ul
-    highscoreEl.appendChild(highscoreP);
-    elements.highscoreUl.appendChild(highscoreEl);
+    // highscoreEl.appendChild(highscoreP);
+    // elements.highscoreUl.appendChild(highscoreEl);
 }
     
 

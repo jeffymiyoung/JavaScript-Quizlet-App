@@ -88,12 +88,12 @@
     background-color: #b3e5fc;
 }
 
-.btn.correct {
+.correct {
     color: black;
     background-color: green;
 }
 
-.btn.wrong {
+.wrong {
     color: black;
     background-color: red;
 }
@@ -123,6 +123,10 @@
 
 .highscore p {
     padding: 16px;
+}
+
+.highscore-list {
+    list-style: none;
 }
 
 .hide {
