@@ -14,6 +14,7 @@ Press the `Restart` Button, if you'd like to restart on your progress and do it 
 Press the `View High Scores` Button, if you'd like to see whose on the current Highscore Roster!
 
 ## Screenshot:
+https://jeffymiyoung.github.io/JavaScript-Quizlet-App/
 ![This is the starting screen for the JavaScript Quiz Web Test Application](./assets/images/screenshot.JPG)
 
 
