@@ -11,7 +11,7 @@ Press the `Start` Button after reading the introduction paragraph, and you'll se
 
 Press the `Restart` Button, if you'd like to restart on your progress and do it all over again!
 
-Press the `View Highscore` Button, if you'd like to see whose on the current Highscore Roster!
+Press the `View High Scores` Button, if you'd like to see whose on the current Highscore Roster!
 
 ## Screenshot:
 ![This is the starting screen for the JavaScript Quiz Web Test Application](./assets/images/screenshot.JPG)
